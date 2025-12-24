@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Navbar from '@/components/layout/Navbar.vue'
-import Sidebar from '@/components/layout/Sidebar.vue'
+// import Sidebar from '@/components/layout/Sidebar.vue'
 import Footer from '@/components/layout/Footer.vue'
 
 const sidebarCollapsed = ref(false)
@@ -19,9 +19,9 @@ const toggleMobileSidebar = () => {
 <template>
   <div class="flex h-screen overflow-hidden bg-base-200">
     <!-- Sidebar Desktop -->
-    <div class="hidden lg:block">
+    <!-- <div class="hidden lg:block">
       <Sidebar :collapsed="sidebarCollapsed" @toggle="toggleSidebar" />
-    </div>
+    </div> -->
 
     <!-- Sidebar Mobile -->
     <Transition name="slide">

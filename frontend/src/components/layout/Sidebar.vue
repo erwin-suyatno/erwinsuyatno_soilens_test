@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useAuth } from '@/composables/useAuth'
+// import { useAuth } from '@/composables/useAuth'
 import {
   LayoutDashboard,
   UtensilsCrossed,
@@ -26,7 +26,7 @@ const emit = defineEmits<{
 
 const router = useRouter()
 const route = useRoute()
-const { user } = useAuth()
+// const { user } = useAuth()
 
 interface MenuItem {
   title: string
@@ -95,7 +95,7 @@ const menuItems = computed<MenuItem[]>(() => {
   // Filter by role
   return items.filter((item) => {
     if (!item.roles) return true
-    return item.roles.includes(user.value?.role || '')
+    return item.roles.includes('')
   })
 })
 
@@ -192,7 +192,6 @@ const toggleSidebar = () => {
 
     <!-- User Info (Bottom) -->
     <div
-      v-if="user"
       class="border-t-2 border-gray-200/50 p-4"
       :class="collapsed && 'flex justify-center'"
     >

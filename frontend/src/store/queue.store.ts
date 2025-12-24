@@ -82,11 +82,7 @@ export const useQueueStore = defineStore('queue', () => {
     if (a.priority === 'medium') return 0
     if (a.priority === 'high') return 1
   }))
-  const completedQueue = computed(() => queue.value.filter((q) => q.status === 'completed').sort((a, b) => {
-    if (a.priority === 'low') return -1
-    if (a.priority === 'medium') return 0
-    if (a.priority === 'high') return 1
-  }))
+  const completedQueue = computed(() => queue.value.filter((q) => q.status === 'completed'))
 
   // Actions
   async function addQueue(queueData: Queue) {
@@ -115,6 +111,18 @@ export const useQueueStore = defineStore('queue', () => {
     queue.value.find((q) => q.id === queueId)!.status = 'completed'
   }
 
+  async function editQueue(queueId: number, queueData: Queue) {
+    const findQueue = queue.value.find((q) => q.id === queueId)
+    if (findQueue) {
+      findQueue.status = queueData.status
+      findQueue.noQueue = queueData.noQueue
+      findQueue.priority = queueData.priority
+      findQueue.reason = queueData.reason
+      findQueue.machine = queueData.machine
+      findQueue.lastUpdated = queueData.lastUpdated
+    }
+  }
+
   return {
     queue,
     loading,
@@ -129,5 +137,6 @@ export const useQueueStore = defineStore('queue', () => {
     startRepairing,
     startChecking,
     startCompleted,
+    editQueue,
   }
 })

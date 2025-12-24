@@ -59,6 +59,9 @@ const formData = ref({
   machine: "",
   lastUpdated: "",
 });
+
+const dialogEditQueue = ref(false);
+const queueIdEdit = ref(0);
 // Computed values
 // const completionRate = computed(() => {
 //   if (!stats.value) return 0;
@@ -111,6 +114,30 @@ const addQueue = async () => {
     showToast("Queue added successfully", "success");
   } catch (error) {
     showToast("Failed to add queue", "error");
+  }
+};
+
+const openDialogEditQueue = (queue: number) => {
+  formData.value = queue;
+  dialogEditQueue.value = true;
+
+};
+const closeDialogEditQueue = () => {
+  dialogEditQueue.value = false;
+};
+const editQueue = async (queueData: any) => {
+  const payload = {
+    noQueue: formData.value.noQueue || "",
+    priority: formData.value.priority || "low",
+    reason: formData.value.reason || "",
+    machine: formData.value.machine || "",
+    lastUpdated: formData.value.lastUpdated || "",
+  };
+  try {
+    await queueStore.editQueue(queueIdEdit.value, payload);
+    showToast("Queue edited successfully", "success");
+  } catch (error) {
+    showToast("Failed to edit queue", "error");
   }
 };
 onMounted(() => {
@@ -195,6 +222,15 @@ onMounted(() => {
                   </div>
                 </div>
 
+                <div class="card-actions justify-start">
+                  <AppButton
+                    variant="secondary"
+                    size="sm"
+                    @click="openDialogEditQueue(queue)"
+                  >
+                    Edit
+                  </AppButton>
+                </div>
                 <!-- button actions -->
                 <div class="card-actions justify-end">
                   <AppButton
@@ -325,5 +361,27 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- dialog edit queue -->
+    <AppDialog v-model="dialogEditQueue" title="Edit Queue">
+      <div class="card-body">
+        <AppInput v-model="formData.noQueue" label="No Queue" placeholder="No Queue" required />
+      </div>
+      <div class="card-body">
+        <AppInput v-model="formData.priority" label="Priority" placeholder="Priority" required />
+      </div>
+      <div class="card-body">
+        <AppInput v-model="formData.reason" label="Reason" placeholder="Reason" required />
+      </div>
+      <div class="card-body">
+        <AppInput v-model="formData.machine" label="Machine" placeholder="Machine" required />
+      </div>
+      <div class="card-body">
+        <AppInput v-model="formData.lastUpdated" label="Last Updated" placeholder="Last Updated" required />
+      </div>
+      <div class="card-actions justify-end">
+        <AppButton variant="primary" size="sm" @click="editQueue(formData)">Edit Queue</AppButton>
+      </div>
+    </AppDialog>
   </div>
 </template>
